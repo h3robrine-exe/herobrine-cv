@@ -902,7 +902,7 @@ function sndUnlock(){
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
         const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=500;
         const gain=ctx.createGain();gain.gain.setValueAtTime(0,t+i*0.12);
-        gain.gain.linearRampToValueAtTime(0.5,t+i*0.12+0.08);
+        gain.gain.linearRampToValueAtTime(0.25,t+i*0.12+0.08);
         gain.gain.exponentialRampToValueAtTime(0.001,t+i*0.12+1.0);
         osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
         osc.start(t+i*0.12);osc.stop(t+i*0.12+1.0);
@@ -914,7 +914,7 @@ function sndUnlock(){
     [82,123,165].forEach(f=>{
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
         const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=200;
-        const g=ctx.createGain();g.gain.value=0.45;
+        const g=ctx.createGain();g.gain.value=0.22;
         osc.connect(filt);filt.connect(g);g.connect(ctx.destination);
         osc.start(bootStart);osc.stop(bootStart+6);
     });
@@ -925,7 +925,7 @@ function sndUnlock(){
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
         const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=400;
         const gain=ctx.createGain();gain.gain.setValueAtTime(0,st);
-        gain.gain.linearRampToValueAtTime(1.0,st+0.05);
+        gain.gain.linearRampToValueAtTime(0.3,st+0.05);
         gain.gain.exponentialRampToValueAtTime(0.001,st+0.4);
         osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
         osc.start(st);osc.stop(st+0.4);
@@ -936,7 +936,7 @@ function sndUnlock(){
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
         const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=500;
         const gain=ctx.createGain();gain.gain.setValueAtTime(0,onlineStart+i*0.15);
-        gain.gain.linearRampToValueAtTime(1.0,onlineStart+i*0.15+0.1);
+        gain.gain.linearRampToValueAtTime(0.25,onlineStart+i*0.15+0.1);
         gain.gain.exponentialRampToValueAtTime(0.001,onlineStart+i*0.15+1.2);
         osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
         osc.start(onlineStart+i*0.15);osc.stop(onlineStart+i*0.15+1.2);
@@ -947,7 +947,7 @@ function sndUnlock(){
         const ct=bootStart+0.8+i*1.1;
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
         const g=ctx.createGain();g.gain.setValueAtTime(0,ct);
-        g.gain.linearRampToValueAtTime(0.75,ct+0.1);
+        g.gain.linearRampToValueAtTime(0.35,ct+0.1);
         g.gain.exponentialRampToValueAtTime(0.001,ct+0.8);
         osc.connect(g);g.connect(ctx.destination);
         osc.start(ct);osc.stop(ct+0.9);
