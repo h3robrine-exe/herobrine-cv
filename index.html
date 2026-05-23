@@ -5,17 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imran Noor — Cybersecurity CV</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fira+Code:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&family=Fira+Code:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{
             --bg:#04040a;--bg2:#0a0a12;--bg3:#101018;
             --red:#ff1744;--red2:#ff5252;--red3:#ff8a80;--red-g:rgba(255,23,68,.5);
-            --green:#00e676;--green-g:rgba(0,230,118,.4);
-            --yellow:#ffd600;--yellow-g:rgba(255,214,0,.4);
-            --purple:#d500f9;--purple-g:rgba(213,0,249,.4);
-            --cyan:#00e5ff;--cyan-g:rgba(0,229,255,.4);
-            --pink:#ff4081;--pink-g:rgba(255,64,129,.4);
+            --purple:#b71c1c;--purple-g:rgba(183,28,28,.4);
+            --cyan:#b71c1c;--cyan-g:rgba(183,28,28,.4);
+            --pink:#b71c1c;--pink-g:rgba(183,28,28,.4);
             --text:#f5f5f5;--text2:#b0b0b0;--text3:#666;--text4:#444;
             --blur:24px;
         }
@@ -44,10 +42,78 @@
         .pre-ring span:nth-child(3){inset:16px;border-bottom-color:var(--red3);animation:spin 2s linear infinite}
         .pre-ring span:nth-child(4){inset:24px;border-left-color:var(--red);animation:spin 2.5s linear infinite reverse}
         @keyframes spin{to{transform:rotate(360deg)}}
-        .pre-logo{font-family:'Orbitron',sans-serif;font-size:2em;font-weight:900;color:var(--red);letter-spacing:8px;text-shadow:0 0 40px rgba(255,23,68,.5),0 0 80px rgba(255,23,68,.2);margin-bottom:20px}
-        .pre-bar{width:200px;height:2px;background:rgba(255,255,255,.05);overflow:hidden;border-radius:2px}
-        .pre-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#b71c1c,var(--red),var(--red2));transition:width .3s;box-shadow:0 0 20px rgba(255,23,68,.4)}
-        .pre-text{margin-top:15px;font-size:.7em;color:var(--text3);font-family:'Fira Code',monospace;letter-spacing:2px}
+        .pre-logo{font-family:'Silkscreen',cursive;font-size:2em;font-weight:700;color:var(--red);letter-spacing:8px;margin-bottom:20px;position:relative;animation:preLogoBob 3s ease-in-out infinite}
+        @keyframes preLogoBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+        .pre-logo::before,.pre-logo::after{content:'HEROBRINE';position:absolute;top:0;left:0;width:100%;height:100%;font-family:'Silkscreen',cursive;background:inherit;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .pre-logo::before{animation:preGlitch1 2s infinite;color:var(--red);z-index:-1;clip-path:polygon(0 0,100% 0,100% 33%,0 33%)}
+        .pre-logo::after{animation:preGlitch2 2s infinite;color:var(--red3);z-index:-1;clip-path:polygon(0 67%,100% 67%,100% 100%,0 100%)}
+        @keyframes preGlitch1{0%,90%,100%{transform:translate(0)}92%{transform:translate(-3px,1px)}94%{transform:translate(3px,-1px)}96%{transform:translate(-1px,0)}}
+        @keyframes preGlitch2{0%,90%,100%{transform:translate(0)}91%{transform:translate(2px,-1px)}93%{transform:translate(-3px,1px)}95%{transform:translate(1px,0)}}
+        .pre-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 3px);pointer-events:none;z-index:10;animation:scanMove 8s linear infinite}
+        @keyframes scanMove{from{background-position:0 0}to{background-position:0 100px}}
+        .pre-bar{width:220px;height:3px;background:rgba(255,255,255,.05);overflow:hidden;border-radius:2px;position:relative}
+        .pre-bar-fill{height:100%;width:0;background:linear-gradient(90deg,#b71c1c,var(--red),var(--red2));transition:width .3s;animation:barPulse 1.5s ease-in-out infinite}
+        @keyframes barPulse{0%,100%{opacity:.7}50%{opacity:1}}
+        .pre-text{margin-top:15px;font-size:.9em;color:var(--text3);font-family:'VT323',monospace;letter-spacing:3px}
+        .pre-text::before{content:'> ';color:var(--red)}
+
+        /* ===== LOCK SCREEN ===== */
+        #lockscreen{
+            position:fixed;inset:0;z-index:9999999;background:var(--bg);
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            transition:all .8s cubic-bezier(.4,0,.2,1);
+        }
+        #lockscreen.unlock{opacity:0;transform:scale(1.15);pointer-events:none}
+        .lock-scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 3px);pointer-events:none;z-index:1}
+        .lock-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:28px;animation:lockContentIn .8s cubic-bezier(.4,0,.2,1) both}
+        @keyframes lockContentIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .lock-logo{
+            font-family:'Silkscreen',cursive;font-size:2.2em;font-weight:700;color:var(--red);
+            letter-spacing:10px;position:relative;animation:lockLogoFloat 4s ease-in-out infinite;
+        }
+        @keyframes lockLogoFloat{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-5px) rotate(-1deg)}75%{transform:translateY(3px) rotate(1deg)}}
+        .lock-logo::before,.lock-logo::after{content:'HEROBRINE';position:absolute;top:0;left:0;width:100%;height:100%;font-family:'Silkscreen',cursive;background:inherit;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .lock-logo::before{animation:preGlitch1 2s infinite;color:var(--red);z-index:-1;clip-path:polygon(0 0,100% 0,100% 33%,0 33%)}
+        .lock-logo::after{animation:preGlitch2 2s infinite;color:var(--red3);z-index:-1;clip-path:polygon(0 67%,100% 67%,100% 100%,0 100%)}
+        .lock-subtitle{font-family:'VT323',monospace;font-size:1.1em;color:var(--text4);letter-spacing:4px;animation:subtitleFade 3s ease-in-out infinite}
+        @keyframes subtitleFade{0%,100%{opacity:.4}50%{opacity:.8}}
+        .lock-icon{width:70px;height:70px;border:2px solid rgba(255,23,68,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,23,68,.02);margin-bottom:10px;position:relative;animation:lockBounce 2.5s ease-in-out infinite;overflow:hidden}
+        .lock-icon::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(255,23,68,.08),transparent 30%);animation:lockSweep 4s linear infinite}
+        @keyframes lockSweep{to{transform:rotate(360deg)}}
+        @keyframes lockBounce{0%,100%{transform:scale(1) translateY(0)}30%{transform:scale(1.05) translateY(-4px)}60%{transform:scale(.98) translateY(2px)}}
+        .lock-icon.unlocked{border-color:var(--red);animation:lockUnlock .5s ease forwards}
+        @keyframes lockUnlock{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1);border-color:var(--red)}}
+        .lock-icon.unlocked svg{animation:lockOpen .5s ease forwards}
+        @keyframes lockOpen{to{transform:translateY(-3px);opacity:.5}}
+        .lock-icon svg{width:28px;height:28px;fill:none;stroke:var(--red);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .lock-form{display:flex;flex-direction:column;align-items:center;gap:14px;animation:lockFormIn 1s cubic-bezier(.4,0,.2,1) .3s both}
+        @keyframes lockFormIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        .lock-input-wrap{position:relative;width:320px}
+        .lock-input{
+            width:100%;padding:14px 18px 14px 42px;font-family:'VT323',monospace;font-size:1.1em;
+            color:var(--text);background:rgba(6,6,12,.9);border:1px solid rgba(255,23,68,.12);
+            outline:none;letter-spacing:3px;transition:all .4s;
+        }
+        .lock-input::placeholder{color:var(--text4);font-size:.85em;letter-spacing:2px}
+        .lock-input:focus{border-color:var(--red);transform:translateY(-1px)}
+        .lock-input-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:none;stroke:var(--text4);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s}
+        .lock-input:focus+.lock-input-icon{stroke:var(--red)}
+        .lock-input-wrap .lock-input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%)}
+        .lock-btn{
+            width:320px;padding:14px 0;font-family:'Silkscreen',cursive;font-size:.7em;
+            color:var(--red);background:rgba(255,23,68,.04);border:1px solid rgba(255,23,68,.15);
+            letter-spacing:4px;cursor:pointer;position:relative;overflow:hidden;transition:all .3s;
+        }
+        .lock-btn:hover{background:rgba(255,23,68,.1);border-color:rgba(255,23,68,.4);transform:translateY(-2px)}
+        .lock-btn:active{transform:scale(.97);background:rgba(255,23,68,.15)}
+        .lock-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,23,68,.06),transparent);transition:left .5s}
+        .lock-btn:hover::before{left:100%}
+        .lock-btn::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--red);transition:all .3s;transform:translateX(-50%)}
+        .lock-btn:hover::after{width:60%}
+        .lock-error{font-family:'VT323',monospace;font-size:1em;color:var(--red);height:1.2em;opacity:0;transition:opacity .3s}
+        .lock-error.show{opacity:1;animation:shake .4s ease}
+        @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+        .lock-hint{font-family:'VT323',monospace;font-size:.9em;color:var(--text4);letter-spacing:2px;margin-top:8px;animation:lockFormIn 1s cubic-bezier(.4,0,.2,1) .5s both}
 
         /* ===== SCROLL PROGRESS ===== */
         #scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#b71c1c,var(--red),var(--red2),var(--red3),var(--red));background-size:200% 100%;animation:progressGlow 3s linear infinite;z-index:100000;width:0;box-shadow:0 0 15px rgba(255,23,68,.5),0 0 30px rgba(255,23,68,.2)}
@@ -56,7 +122,6 @@
         /* ===== GLOBAL BG EFFECTS ===== */
         canvas#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none}
         canvas#aurora{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.45}
-        canvas#matrix{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.08}
         #spotlight{
             position:fixed;width:800px;height:800px;border-radius:50%;pointer-events:none;z-index:0;
             background:radial-gradient(circle,rgba(255,23,68,.06) 0%,rgba(255,82,82,.02) 30%,transparent 60%);
@@ -76,11 +141,11 @@
             pointer-events:none;z-index:9997;opacity:.5;
         }
 
-        .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);will-change:transform}
-        .orb.o1{width:800px;height:800px;top:-300px;left:-300px;background:radial-gradient(circle,rgba(255,23,68,.12) 0%,rgba(255,82,82,.04) 40%,transparent 70%);animation:o1 22s ease-in-out infinite}
+        .orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(120px);will-change:transform;contain:strict}
+        .orb.o1{width:800px;height:800px;top:-300px;left:-300px;background:radial-gradient(circle,rgba(255,23,68,.14) 0%,rgba(255,82,82,.04) 40%,transparent 70%);animation:o1 22s ease-in-out infinite}
         .orb.o2{width:600px;height:600px;bottom:-200px;right:-200px;background:radial-gradient(circle,rgba(255,23,68,.08) 0%,rgba(255,82,82,.03) 40%,transparent 70%);animation:o2 28s ease-in-out infinite}
-        .orb.o3{width:500px;height:500px;top:40%;left:50%;background:radial-gradient(circle,rgba(255,23,68,.06) 0%,rgba(255,138,128,.02) 40%,transparent 70%);animation:o3 32s ease-in-out infinite}
-        .orb.o4{width:400px;height:400px;top:20%;right:10%;background:radial-gradient(circle,rgba(255,23,68,.03) 0%,transparent 70%);animation:o4 26s ease-in-out infinite}
+        .orb.o3{width:500px;height:500px;top:40%;left:50%;background:radial-gradient(circle,rgba(255,23,68,.07) 0%,rgba(255,82,82,.02) 40%,transparent 70%);animation:o3 32s ease-in-out infinite}
+        .orb.o4{width:400px;height:400px;top:20%;right:10%;background:radial-gradient(circle,rgba(255,23,68,.04) 0%,transparent 70%);animation:o4 26s ease-in-out infinite}
         @keyframes o4{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,40px)}}
         @keyframes o1{0%,100%{transform:translate(0,0)}33%{transform:translate(100px,60px)}66%{transform:translate(-60px,100px)}}
         @keyframes o2{0%,100%{transform:translate(0,0)}33%{transform:translate(-80px,-90px)}66%{transform:translate(70px,-50px)}}
@@ -104,13 +169,15 @@
             border:1px solid rgba(255,23,68,.12);
             position:relative;overflow:hidden;
             box-shadow:0 0 150px rgba(255,23,68,.06),0 30px 100px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.03);
+            transition:box-shadow .5s;
         }
+        .cv-card:hover{box-shadow:0 0 200px rgba(255,23,68,.08),0 30px 120px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.05)}
         /* Animated conic border */
         .cv-card::before{
             content:'';position:absolute;inset:-2px;z-index:-1;
             background:conic-gradient(from 0deg,var(--red),transparent 20%,var(--red2) 40%,transparent 60%,var(--red3) 80%,var(--red));
             animation:borderSpin 6s linear infinite;
-            opacity:.35;
+            opacity:.4;
             filter:blur(1px);
         }
         .cv-card::after{content:'';position:absolute;inset:1px;background:var(--bg);z-index:-1}
@@ -164,6 +231,9 @@
             position:relative;display:inline-block;
         }
         .header-info h1 .name-red::after{content:attr(data-text);position:absolute;top:0;left:0;color:var(--red);filter:blur(15px);opacity:.4;z-index:-1}
+        .header-info h1 .name-red .type-cursor{display:inline-block;width:3px;height:1em;background:var(--red);margin-left:4px;vertical-align:text-bottom;animation:cb .7s step-end infinite}
+        .header-sweep{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),var(--red2),var(--red),transparent);transform:scaleX(0);transform-origin:left;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+        .cv-header:hover .header-sweep{transform:scaleX(1)}
         .header-info h1 .name-white{color:var(--text);text-shadow:0 0 30px rgba(255,255,255,.1)}
         .alias-line{font-family:'Press Start 2P',monospace;font-size:.62em;color:var(--text3);letter-spacing:3px;margin-bottom:22px}
         .alias-line .alias-red{color:var(--red);text-shadow:0 0 15px var(--red-g);border-bottom:2px solid var(--red);padding-bottom:2px}
@@ -175,8 +245,7 @@
         .c-item{display:flex;align-items:center;gap:8px;font-size:.8em;color:var(--text3);padding:8px 18px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.015);transition:all .35s;position:relative;overflow:hidden;cursor:default}
         .c-item::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,23,68,.06),transparent);transition:left .5s}
         .c-item:hover::before{left:100%}
-        .c-item:hover::before{opacity:1}
-        .c-item:hover{border-color:rgba(255,23,68,.35);color:var(--text);transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,23,68,.1)}
+        .c-item:hover{border-color:rgba(255,23,68,.4);color:var(--text);transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,23,68,.1)}
         .c-item .ci{color:var(--red);font-size:.9em}
 
         /* ===== OBJECTIVE ===== */
@@ -194,18 +263,20 @@
         .cv-section::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(255,23,68,.015),transparent);opacity:0;transition:opacity .4s;pointer-events:none}
         .cv-section:hover::before{background:var(--red);box-shadow:0 0 30px var(--red-g),4px 0 0 rgba(255,23,68,.3),-4px 0 20px rgba(255,23,68,.1)}
         .cv-section:hover::after{opacity:1}
-        .cv-section:hover{box-shadow:inset 0 0 40px rgba(255,23,68,.02),inset 0 1px 0 rgba(255,23,68,.05)}
-        .sec-title{font-family:'Press Start 2P',monospace;font-size:.65em;font-weight:400;color:var(--red);letter-spacing:3px;margin-bottom:22px;text-shadow:0 0 25px var(--red-g);padding-bottom:14px;border-bottom:1px solid rgba(255,23,68,.08);position:relative;cursor:default;user-select:none}
+        .cv-section:hover{box-shadow:inset 0 0 60px rgba(255,23,68,.03),inset 0 1px 0 rgba(255,23,68,.08);background:rgba(255,23,68,.008)}
+        .sec-num{font-family:'Orbitron',sans-serif;font-size:.55em;color:rgba(255,23,68,.12);position:absolute;top:28px;right:40px;font-weight:700;letter-spacing:2px;transition:all .4s}
+        .cv-section:hover .sec-num{color:rgba(255,23,68,.25);text-shadow:0 0 15px rgba(255,23,68,.15)}
+        .sec-title{font-family:'Press Start 2P',monospace;font-size:.7em;font-weight:400;color:var(--red);letter-spacing:3px;margin-bottom:24px;text-shadow:0 0 25px var(--red-g);padding-bottom:14px;border-bottom:1px solid rgba(255,23,68,.08);position:relative;cursor:default;user-select:none}
         .sec-title::before{content:'// ';color:var(--text4);font-family:'Fira Code',monospace;font-weight:400}
         .sec-title::after{content:'';position:absolute;bottom:-1px;left:0;width:80px;height:2px;background:var(--red);box-shadow:0 0 20px var(--red-g)}
         .sec-title span{display:inline-block}
         .cv-section:hover .sec-title::after{width:120px;box-shadow:0 0 30px var(--red-g)}
 
         /* EDUCATION */
-        .edu-card{background:linear-gradient(135deg,rgba(12,12,18,.6),rgba(18,18,26,.4));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.05);padding:22px 24px;position:relative;transition:all .4s;overflow:hidden}
-        .edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,23,68,.15),transparent)}
-        .edu-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(255,23,68,.04),transparent);opacity:0;transition:opacity .4s}
-        .edu-card:hover{border-color:rgba(255,23,68,.25);box-shadow:0 15px 50px rgba(255,23,68,.08);transform:translateY(-3px)}
+        .edu-card{background:linear-gradient(135deg,rgba(12,12,18,.7),rgba(18,18,26,.5));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.06);padding:22px 24px;position:relative;transition:all .4s;overflow:hidden}
+        .edu-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,23,68,.2),var(--red),rgba(255,23,68,.2),transparent)}
+        .edu-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(255,23,68,.05),transparent);opacity:0;transition:opacity .4s}
+        .edu-card:hover{border-color:rgba(255,23,68,.3);box-shadow:0 20px 60px rgba(255,23,68,.1);transform:translateY(-4px)}
         .edu-card:hover::after{opacity:1}
         .edu-degree{font-family:'Press Start 2P',monospace;font-size:.55em;font-weight:400;color:var(--text);letter-spacing:2px;margin-bottom:10px;line-height:1.8}
         .edu-school{font-size:.85em;color:var(--text2);margin-bottom:4px}
@@ -224,7 +295,7 @@
         .st::before{content:'>';color:var(--text4);margin-right:6px;font-size:.85em;transition:all .3s}
         .st::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:radial-gradient(circle,rgba(255,23,68,.15),transparent);border-radius:50%;transition:all .5s;transform:translate(-50%,-50%)}
         .st:hover::after{width:200px;height:200px}
-        .st:hover{border-color:rgba(255,23,68,.4);color:var(--red);background:rgba(255,23,68,.06);box-shadow:0 0 25px rgba(255,23,68,.1),0 0 50px rgba(255,23,68,.03);transform:translateY(-2px)}
+        .st:hover{border-color:rgba(255,23,68,.45);color:var(--red);background:rgba(255,23,68,.06);box-shadow:0 0 25px rgba(255,23,68,.1),0 0 50px rgba(255,23,68,.03);transform:translateY(-2px)}
         .st:hover::before{color:var(--red)}
         .st.cert{border-color:rgba(255,23,68,.15);background:rgba(255,23,68,.02)}
         .st.cert:hover{border-color:rgba(255,23,68,.45);color:var(--red);background:rgba(255,23,68,.08);box-shadow:0 0 25px rgba(255,23,68,.12)}
@@ -239,15 +310,14 @@
         .bar-group{margin-bottom:16px}.bar-group:last-child{margin-bottom:0}
         .bar-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
         .bar-label span:first-child{font-size:.85em;color:var(--text2)}
-        .bar-label span:last-child{font-family:'Press Start 2P',monospace;font-size:.42em;color:var(--text4)}
+        .bar-label span:last-child,.bar-pct{font-family:'Press Start 2P',monospace;font-size:.42em;color:var(--red);transition:color .3s}
         .bar-track{height:7px;background:rgba(255,255,255,.03);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.03)}
         .bar-fill{height:100%;width:0;transition:width 1.8s cubic-bezier(.25,.46,.45,.94);position:relative}
         .bar-fill.red{background:linear-gradient(90deg,#b71c1c,var(--red),#ff8a80);box-shadow:0 0 20px var(--red-g)}
-        .bar-fill.green{background:linear-gradient(90deg,#1b5e20,var(--green),#69f0ae);box-shadow:0 0 20px var(--green-g)}
-        .bar-fill.purple{background:linear-gradient(90deg,#4a148c,var(--purple),#ea80fc);box-shadow:0 0 20px var(--purple-g)}
-        .bar-fill.cyan{background:linear-gradient(90deg,#006064,var(--cyan),#84ffff);box-shadow:0 0 20px var(--cyan-g)}
+        .bar-fill.red,.bar-fill.green,.bar-fill.purple,.bar-fill.cyan{background:linear-gradient(90deg,#b71c1c,var(--red),#ff8a80);box-shadow:0 0 20px var(--red-g)}
         .bar-fill::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,.3)}
-        .bar-fill::after{content:'';position:absolute;right:0;top:0;width:60px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25));animation:shimmer 2.5s infinite}
+        .bar-fill::after{content:'';position:absolute;right:0;top:-4px;width:8px;height:15px;background:inherit;border-radius:50%;filter:blur(6px);opacity:.8;animation:tipGlow 2s ease-in-out infinite}
+        @keyframes tipGlow{0%,100%{opacity:.5;filter:blur(6px)}50%{opacity:1;filter:blur(10px)}}
         @keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
         .bar-fill.pulse{animation:barPulse 3s ease-in-out infinite}
         @keyframes barPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
@@ -266,10 +336,10 @@
 
         /* INFO GRID */
         .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .info-item{padding:12px 16px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.01);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .35s;position:relative;overflow:hidden}
-        .info-item::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(255,23,68,.04),transparent);opacity:0;transition:opacity .35s}
+        .info-item{padding:12px 16px;border:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.01);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:all .35s;position:relative;overflow:hidden}
+        .info-item::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(255,23,68,.05),transparent);opacity:0;transition:opacity .35s}
         .info-item:hover::before{opacity:1}
-        .info-item:hover{border-color:rgba(255,23,68,.2);transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,23,68,.06)}
+        .info-item:hover{border-color:rgba(255,23,68,.25);transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,23,68,.08)}
         .info-label{font-family:'Press Start 2P',monospace;font-size:.42em;color:var(--text4);letter-spacing:1px;margin-bottom:6px}
         .info-val{color:var(--text2);font-size:.9em}
         .status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:8px;box-shadow:0 0 12px rgba(255,23,68,.4);animation:blink 2s ease infinite}
@@ -277,11 +347,11 @@
         /* INTERESTS */
         .interest-list{display:flex;flex-direction:column;gap:2px}
         .interest-item{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border:1px solid rgba(255,255,255,.03);background:rgba(255,255,255,.01);transition:all .35s;position:relative;overflow:hidden}
-        .interest-item::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:rgba(255,23,68,.08);transition:all .35s}
-        .interest-item:hover::before{background:var(--red);box-shadow:0 0 10px var(--red-g)}
-        .interest-item:hover{border-color:rgba(255,23,68,.15);background:rgba(255,23,68,.02);transform:translateX(3px)}
-        .interest-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid rgba(255,23,68,.1);background:rgba(255,23,68,.03);flex-shrink:0;margin-top:2px}
-        .interest-item:hover .interest-icon{border-color:rgba(255,23,68,.25);box-shadow:0 0 10px rgba(255,23,68,.08)}
+        .interest-item::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:rgba(255,23,68,.08);transition:all .4s}
+        .interest-item:hover::before{background:var(--red);box-shadow:0 0 12px var(--red-g)}
+        .interest-item:hover{border-color:rgba(255,23,68,.15);background:rgba(255,23,68,.02);transform:translateX(4px)}
+        .interest-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid rgba(255,23,68,.12);background:rgba(255,23,68,.04);flex-shrink:0;margin-top:2px;transition:all .35s}
+        .interest-item:hover .interest-icon{border-color:rgba(255,23,68,.3);box-shadow:0 0 15px rgba(255,23,68,.1);background:rgba(255,23,68,.08)}
         .interest-title{font-family:'Press Start 2P',monospace;font-size:.35em;color:var(--text);letter-spacing:1px;margin-bottom:4px;transition:color .3s}
         .interest-item:hover .interest-title{color:var(--red)}
         .interest-desc{font-size:.72em;color:var(--text3);line-height:1.5}
@@ -295,6 +365,11 @@
         /* REVEAL */
         .reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
         .reveal.vis{opacity:1;transform:translateY(0)}
+        .reveal:nth-child(1){transition-delay:.1s}
+        .reveal:nth-child(2){transition-delay:.2s}
+        .reveal:nth-child(3){transition-delay:.3s}
+        .reveal:nth-child(4){transition-delay:.4s}
+        .reveal:nth-child(5){transition-delay:.5s}
 
         /* GLITCH */
         .glitch{position:relative;display:inline-block}
@@ -305,7 +380,7 @@
         @keyframes g2{0%,86%,100%{transform:translate(0);opacity:1}87%{transform:translate(3px,-2px);opacity:.7}89%{transform:translate(-4px,1px);opacity:.5}91%{transform:translate(2px,0);opacity:.8}93%{transform:translate(0);opacity:1}}
 
         /* MOUSE TRAIL */
-        .trail-dot{position:fixed;width:6px;height:6px;border-radius:50%;background:var(--red);pointer-events:none;z-index:9997;box-shadow:0 0 10px var(--red-g);transition:opacity .5s}
+        .trail-dot{position:fixed;border-radius:50%;background:var(--red);pointer-events:none;z-index:9997;box-shadow:0 0 12px var(--red-g),0 0 4px var(--red);transition:opacity .5s;mix-blend-mode:screen;will-change:transform}
 
         /* KONAMI */
         #konami-msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-family:'Press Start 2P',monospace;font-size:1em;color:var(--red);text-shadow:0 0 30px var(--red-g);z-index:99999;pointer-events:none;transition:transform .5s cubic-bezier(.68,-.55,.27,1.55);background:rgba(4,4,10,.95);padding:30px 40px;border:1px solid var(--red);text-align:center}
@@ -346,6 +421,8 @@
             transition:all .3s;box-shadow:0 4px 20px rgba(0,0,0,.4);
         }
         .fab:hover{border-color:var(--red);box-shadow:0 4px 30px rgba(255,23,68,.2);transform:scale(1.1)}
+        .fab::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(255,23,68,.3),transparent);opacity:0;transform:scale(0);transition:all .5s}
+        .fab:active::after{opacity:1;transform:scale(1.5);transition:all .1s}
         .fab svg{width:20px;height:20px;fill:none;stroke:var(--red);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
         .fab:hover svg{filter:drop-shadow(0 0 6px rgba(255,23,68,.4))}
         .fab-label{
@@ -364,8 +441,6 @@
         @keyframes fabIn{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
 
         /* MATRIX TOGGLE */
-        .fab.matrix-active{border-color:var(--green);box-shadow:0 4px 20px rgba(0,230,118,.2)}
-        .fab.matrix-active svg{stroke:var(--green)}
 
         /* ===== MOBILE TOUCH ===== */
         @media(hover:none){
@@ -373,10 +448,17 @@
             .trail-dot{display:none!important}
             .c-item:hover,.st:hover,.edu-card:hover,.info-item:hover{transform:none}
             .fab-label{display:none!important}
+            .orb{filter:blur(80px)}
+            .cv-card{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+            .edu-card,.info-item,.objective{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+            .header-info h1 .name-red::after{filter:blur(8px);opacity:.25}
+            .cv-card::before{filter:none}
+            .bar-fill::after{display:none}
         }
 
         /* ===== RESPONSIVE ===== */
         @media(max-width:960px){
+            .lock-logo{font-size:1.8em;letter-spacing:7px}
             .cv-body{grid-template-columns:1fr}
             .cv-header{flex-direction:column;text-align:center;padding:40px 30px 30px;gap:25px}
             .contact-row{justify-content:center}
@@ -392,6 +474,13 @@
             .hex-bg{display:none}
         }
         @media(max-width:550px){
+            .lock-logo{font-size:1.4em;letter-spacing:5px}
+            .lock-subtitle{font-size:.85em;letter-spacing:2px}
+            .lock-icon{width:56px;height:56px}
+            .lock-icon svg{width:22px;height:22px}
+            .lock-input-wrap,.lock-btn{width:280px}
+            .lock-input{padding:12px 14px 12px 36px;font-size:1em}
+            .lock-btn{font-size:.6em;padding:12px 0}
             .container{padding:10px 6px}
             .cv-header{padding:30px 18px 22px;gap:18px}
             .avatar-wrap{width:100px;height:100px}
@@ -442,8 +531,30 @@
     </style>
 </head>
 <body>
+    <!-- LOCK SCREEN -->
+    <div id="lockscreen">
+        <div class="lock-scanlines"></div>
+        <div class="lock-content">
+            <div class="lock-logo">HEROBRINE</div>
+            <div class="lock-subtitle">SECURE ACCESS TERMINAL</div>
+            <div class="lock-icon">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <div class="lock-form" id="lock-form">
+                <div class="lock-input-wrap">
+                    <input type="password" class="lock-input" id="lock-pw" placeholder="ENTER ACCESS KEY" autocomplete="off" spellcheck="false">
+                    <svg class="lock-input-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                </div>
+                <button class="lock-btn" id="lock-btn" type="button">AUTHORIZE</button>
+                <div class="lock-error" id="lock-error">ACCESS DENIED — INVALID KEY</div>
+            </div>
+            <div class="lock-hint">// classified clearance required</div>
+        </div>
+    </div>
+
     <!-- PRELOADER -->
     <div id="preloader">
+        <div class="pre-scanlines"></div>
         <div class="pre-ring"><span></span><span></span><span></span><span></span></div>
         <div class="pre-logo">HEROBRINE</div>
         <div class="pre-bar"><div class="pre-bar-fill" id="pre-fill"></div></div>
@@ -451,7 +562,6 @@
     </div>
 
     <!-- BG LAYERS -->
-    <canvas id="matrix"></canvas>
     <canvas id="aurora"></canvas>
     <canvas id="bgCanvas"></canvas>
     <div id="spotlight"></div>
@@ -471,10 +581,6 @@
 
     <!-- FLOATING ACTION BUTTONS -->
     <div id="fabs">
-        <div class="fab" id="fab-matrix" title="Toggle Matrix Rain">
-            <svg viewBox="0 0 24 24"><path d="M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z"/></svg>
-            <span class="fab-label">MATRIX</span>
-        </div>
         <div class="fab" id="fab-top" title="Scroll to Top">
             <svg viewBox="0 0 24 24"><path d="M12 19V5m-7 7l7-7 7 7"/></svg>
             <span class="fab-label">TOP</span>
@@ -509,6 +615,7 @@
 
             <!-- HEADER -->
             <div class="cv-header">
+                <div class="header-sweep"></div>
                 <div class="hex-bg"></div>
                 <div class="avatar-wrap" id="avatar-wrap">
                     <div class="orbit-ring"></div>
@@ -530,12 +637,12 @@
                 </div>
                 <div class="header-info">
                     <h1>
-                        <span class="name-red glitch" data-text="IMRAN">IMRAN</span>
-                        <span class="name-white"> NOOR</span>
+                        <span class="name-red glitch" data-text="IMRAN" id="type-name"></span>
+                        <span class="name-white" id="type-surname"></span>
                     </h1>
                     <div class="alias-line">a.k.a. <span class="alias-red">HEROBRINE</span><span class="cursor-blink"></span></div>
                     <div class="contact-row">
-                        <div class="c-item"><span class="ci">&#9742;</span><span>+92 336 9646539</span></div>
+                        <div class="c-item"><span class="ci">&#9742;</span><span>+92 3369646539</span></div>
                         <div class="c-item"><span class="ci">&#9993;</span><span>therealrobinclarke@proton.me</span></div>
                         <div class="c-item"><span class="ci">&#9873;</span><span>Peshawar, Pakistan</span></div>
                     </div>
@@ -552,6 +659,7 @@
             <div class="cv-body">
                 <div>
                     <div class="cv-section reveal" data-section="education">
+                        <span class="sec-num">01</span>
                         <div class="sec-title">EDUCATION</div>
                         <div class="edu-card">
                             <div class="edu-degree">BS Cyber Security</div>
@@ -561,6 +669,7 @@
                         </div>
                     </div>
                     <div class="cv-section reveal" data-section="certs">
+                        <span class="sec-num">02</span>
                         <div class="sec-title">CERTIFICATIONS</div>
                         <div class="skill-tags">
                             <span class="st cert">CCNA — Corvit Peshawar</span>
@@ -569,18 +678,21 @@
                         </div>
                     </div>
                     <div class="cv-section reveal" data-section="radar">
+                        <span class="sec-num">03</span>
                         <div class="sec-title">SKILL RADAR</div>
                         <div class="radar-wrap"><canvas id="radarChart" width="300" height="300"></canvas></div>
                     </div>
                     <div class="cv-section reveal" data-section="proficiency">
+                        <span class="sec-num">04</span>
                         <div class="sec-title">PROFICIENCY</div>
-                        <div class="bar-group"><div class="bar-label"><span>Penetration Testing</span><span>45%</span></div><div class="bar-track"><div class="bar-fill red" data-width="45"></div></div></div>
-                        <div class="bar-group"><div class="bar-label"><span>Network Security</span><span>50%</span></div><div class="bar-track"><div class="bar-fill red" data-width="50"></div></div></div>
-                        <div class="bar-group"><div class="bar-label"><span>Linux Admin</span><span>55%</span></div><div class="bar-track"><div class="bar-fill green" data-width="55"></div></div></div>
-                        <div class="bar-group"><div class="bar-label"><span>Prompt Engineering</span><span>60%</span></div><div class="bar-track"><div class="bar-fill purple" data-width="60"></div></div></div>
-                        <div class="bar-group"><div class="bar-label"><span>Agentic AI</span><span>35%</span></div><div class="bar-track"><div class="bar-fill cyan" data-width="35"></div></div></div>
+                        <div class="bar-group"><div class="bar-label"><span>Penetration Testing</span><span class="bar-pct" data-pct="45">0%</span></div><div class="bar-track"><div class="bar-fill red" data-width="45"></div></div></div>
+                        <div class="bar-group"><div class="bar-label"><span>Network Security</span><span class="bar-pct" data-pct="50">0%</span></div><div class="bar-track"><div class="bar-fill red" data-width="50"></div></div></div>
+                        <div class="bar-group"><div class="bar-label"><span>Linux Admin</span><span class="bar-pct" data-pct="55">0%</span></div><div class="bar-track"><div class="bar-fill green" data-width="55"></div></div></div>
+                        <div class="bar-group"><div class="bar-label"><span>Prompt Engineering</span><span class="bar-pct" data-pct="60">0%</span></div><div class="bar-track"><div class="bar-fill purple" data-width="60"></div></div></div>
+                        <div class="bar-group"><div class="bar-label"><span>Agentic AI</span><span class="bar-pct" data-pct="35">0%</span></div><div class="bar-track"><div class="bar-fill cyan" data-width="35"></div></div></div>
                     </div>
                     <div class="cv-section reveal" data-section="languages">
+                        <span class="sec-num">05</span>
                         <div class="sec-title">LANGUAGES</div>
                         <div class="lang-item"><span class="lang-name">PASHTO</span><span class="lang-level">Native</span><div class="lang-bar"><div class="lang-bar-fill" data-width="100"></div></div></div>
                         <div class="lang-item"><span class="lang-name">URDU</span><span class="lang-level">Native</span><div class="lang-bar"><div class="lang-bar-fill" data-width="100"></div></div></div>
@@ -589,6 +701,7 @@
                 </div>
                 <div>
                     <div class="cv-section reveal" data-section="skills">
+                        <span class="sec-num">06</span>
                         <div class="sec-title">TECHNICAL SKILLS</div>
                         <div class="skill-group"><div class="skill-group-title">&gt; CYBERSECURITY</div><div class="skill-tags"><span class="st">Penetration Testing</span><span class="st">Ethical Hacking</span><span class="st">Network Security</span><span class="st">Vulnerability Assessment</span></div></div>
                         <div class="skill-group"><div class="skill-group-title">&gt; NETWORKING</div><div class="skill-tags"><span class="st cert">CCNA</span><span class="st">TCP/IP</span><span class="st">Routing & Switching</span></div></div>
@@ -596,6 +709,7 @@
                         <div class="skill-group"><div class="skill-group-title">&gt; AI & AUTOMATION</div><div class="skill-tags"><span class="st ai">Prompt Engineering</span><span class="st ai">Agentic AI</span><span class="st ai">Autonomous Agents</span><span class="st ai">AI for Offensive Security</span></div></div>
                     </div>
                     <div class="cv-section reveal" data-section="personal">
+                        <span class="sec-num">07</span>
                         <div class="sec-title">PERSONAL INFO</div>
                         <div class="info-grid">
                             <div class="info-item"><div class="info-label">DATE OF BIRTH</div><div class="info-val">5 December 2006</div></div>
@@ -605,6 +719,7 @@
                         </div>
                     </div>
                     <div class="cv-section reveal" data-section="interests">
+                        <span class="sec-num">08</span>
                         <div class="sec-title">INTERESTS</div>
                         <div class="interest-list">
                             <div class="interest-item">
@@ -676,67 +791,271 @@ console.log('%c'+`
 `,'color:#ff1744;font-family:monospace;font-size:10px');
 console.log('%c> SYSTEM ACCESSED — HEROBRINE SEES ALL','color:#666;font-family:monospace');
 
+// ===== WEB AUDIO SOUND ENGINE =====
+let audioCtx=null;
+function ensureAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+
+// Typing click — short filtered noise burst
+function sndType(){
+    const ctx=ensureAudio();if(!ctx)return;
+    const dur=0.02+Math.random()*0.015;
+    const buf=ctx.createBuffer(1,ctx.sampleRate*dur,ctx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,8);
+    const src=ctx.createBufferSource();src.buffer=buf;
+    const filt=ctx.createBiquadFilter();filt.type='highpass';filt.frequency.value=2000+Math.random()*2000;
+    const gain=ctx.createGain();gain.gain.value=0.06+Math.random()*0.03;
+    src.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
+    src.start();src.stop(ctx.currentTime+dur);
+}
+
+// Hover tick — tiny click
+function sndHover(){
+    const ctx=ensureAudio();if(!ctx)return;
+    const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=3000;
+    const gain=ctx.createGain();gain.gain.setValueAtTime(0.025,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.04);
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.start();osc.stop(ctx.currentTime+0.04);
+}
+
+// Section reveal — soft whoosh
+function sndReveal(){
+    const ctx=ensureAudio();if(!ctx)return;
+    const buf=ctx.createBuffer(1,ctx.sampleRate*0.15,ctx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<data.length;i++){const t=i/data.length;data[i]=(Math.random()*2-1)*Math.sin(t*Math.PI)*0.3}
+    const src=ctx.createBufferSource();src.buffer=buf;
+    const filt=ctx.createBiquadFilter();filt.type='bandpass';filt.frequency.value=400;filt.Q.value=1;
+    const gain=ctx.createGain();gain.gain.value=0.03;
+    src.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
+    src.start();
+}
+
+// Konami success — dramatic power-up arpeggio
+function sndKonami(){
+    const ctx=ensureAudio();if(!ctx)return;
+    const notes=[261,329,392,523,659,784,1046];
+    notes.forEach((f,i)=>{
+        const osc=ctx.createOscillator();osc.type='square';osc.frequency.value=f;
+        const gain=ctx.createGain();gain.gain.setValueAtTime(0,ctx.currentTime+i*0.07);
+        gain.gain.linearRampToValueAtTime(0.04,ctx.currentTime+i*0.07+0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.07+0.5);
+        osc.connect(gain);gain.connect(ctx.destination);
+        osc.start(ctx.currentTime+i*0.07);osc.stop(ctx.currentTime+i*0.07+0.5);
+    });
+}
+
+// Avatar glitch — digital distortion burst
+function sndGlitch(){
+    const ctx=ensureAudio();if(!ctx)return;
+    for(let i=0;i<5;i++){
+        const osc=ctx.createOscillator();osc.type='sawtooth';
+        osc.frequency.value=100+Math.random()*2000;
+        const gain=ctx.createGain();gain.gain.setValueAtTime(0.03,ctx.currentTime+i*0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.06+0.06);
+        osc.connect(gain);gain.connect(ctx.destination);
+        osc.start(ctx.currentTime+i*0.06);osc.stop(ctx.currentTime+i*0.06+0.06);
+    }
+}
+
+// FAB click — satisfying pop
+function sndClick(){
+    const ctx=ensureAudio();if(!ctx)return;
+    const osc=ctx.createOscillator();osc.type='sine';
+    osc.frequency.setValueAtTime(800,ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(200,ctx.currentTime+0.08);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(0.05,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.1);
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.start();osc.stop(ctx.currentTime+0.1);
+}
+
+// ===== LOCK SCREEN =====
+const PW='Zer0Day#P3shawar';
+const lockEl=document.getElementById('lockscreen');
+const lockPw=document.getElementById('lock-pw');
+const lockBtn=document.getElementById('lock-btn');
+const lockErr=document.getElementById('lock-error');
+const lockForm=document.getElementById('lock-form');
+
+// Lock error sound
+function sndLockError(){
+    const ctx=ensureAudio();if(!ctx)return;
+    const osc=ctx.createOscillator();osc.type='square';
+    osc.frequency.setValueAtTime(200,ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(80,ctx.currentTime+0.25);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(0.05,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.start();osc.stop(ctx.currentTime+0.3);
+}
+
+// Authorize unlock sound — calm warm rise + schedule all boot audio in same gesture
+function sndUnlock(){
+    const ctx=ensureAudio();if(!ctx)return;
+    const t=ctx.currentTime;
+    // Unlock chord
+    const notes=[261,330,392,523];
+    notes.forEach((f,i)=>{
+        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
+        const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=500;
+        const gain=ctx.createGain();gain.gain.setValueAtTime(0,t+i*0.12);
+        gain.gain.linearRampToValueAtTime(0.02,t+i*0.12+0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001,t+i*0.12+1.0);
+        osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
+        osc.start(t+i*0.12);osc.stop(t+i*0.12+1.0);
+    });
+
+    // Pre-schedule all boot audio in this same gesture callback (required for mobile)
+    // Boot ambient pads
+    const bootStart=t+2.0;
+    [82,123,165].forEach(f=>{
+        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
+        const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=200;
+        const g=ctx.createGain();g.gain.value=0.008;
+        osc.connect(filt);filt.connect(g);g.connect(ctx.destination);
+        osc.start(bootStart);osc.stop(bootStart+6);
+    });
+    // Boot step tones
+    const stepNotes=[220,260,300,340,380,420,330];
+    stepNotes.forEach((f,i)=>{
+        const st=bootStart+i*0.55;
+        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
+        const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=400;
+        const gain=ctx.createGain();gain.gain.setValueAtTime(0,st);
+        gain.gain.linearRampToValueAtTime(0.015,st+0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001,st+0.4);
+        osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
+        osc.start(st);osc.stop(st+0.4);
+    });
+    // Systems online chord
+    const onlineStart=bootStart+4.5;
+    [220,277,330,440].forEach((f,i)=>{
+        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
+        const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=500;
+        const gain=ctx.createGain();gain.gain.setValueAtTime(0,onlineStart+i*0.15);
+        gain.gain.linearRampToValueAtTime(0.02,onlineStart+i*0.15+0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001,onlineStart+i*0.15+1.2);
+        osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
+        osc.start(onlineStart+i*0.15);osc.stop(onlineStart+i*0.15+1.2);
+    });
+    // Gentle chime pings
+    const chimeNotes=[330,392,440,523,587];
+    chimeNotes.forEach((f,i)=>{
+        const ct=bootStart+0.8+i*1.1;
+        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
+        const g=ctx.createGain();g.gain.setValueAtTime(0,ct);
+        g.gain.linearRampToValueAtTime(0.012,ct+0.1);
+        g.gain.exponentialRampToValueAtTime(0.001,ct+0.8);
+        osc.connect(g);g.connect(ctx.destination);
+        osc.start(ct);osc.stop(ct+0.9);
+    });
+}
+
+function tryUnlock(){
+    ensureAudio();
+    if(lockPw.value===PW){
+        sndUnlock();
+        // Animate lock icon open
+        document.querySelector('.lock-icon').classList.add('unlocked');
+        // Glitch the whole screen
+        lockEl.style.animation='g1 .15s linear 3';
+        setTimeout(()=>{
+            lockEl.classList.add('unlock');
+            setTimeout(()=>{
+                lockEl.remove();
+                document.getElementById('preloader').style.display='';
+                preStep();
+            },800);
+        },500);
+    }else{
+        sndLockError();
+        lockErr.classList.add('show');
+        lockPw.style.borderColor='var(--red)';
+        lockPw.style.animation='shake .4s ease';
+        // Flash the screen red
+        lockEl.style.boxShadow='inset 0 0 80px rgba(255,23,68,.15)';
+        setTimeout(()=>{lockEl.style.boxShadow=''},300);
+        setTimeout(()=>{lockErr.classList.remove('show');lockPw.style.borderColor='';lockPw.style.animation=''},2000);
+        lockPw.value='';
+        lockPw.focus();
+    }
+}
+
+// Typing sound on password input
+lockPw.addEventListener('input',()=>{if(lockPw.value.length>0)sndType()});
+lockBtn.addEventListener('click',tryUnlock);
+lockPw.addEventListener('keydown',e=>{if(e.key==='Enter')tryUnlock()});
+lockPw.focus();
+
+// Hide preloader initially (shown after unlock)
+document.getElementById('preloader').style.display='none';
+
 // ===== PRELOADER =====
-const steps=['Loading kernel modules...','Establishing encrypted channel...','Verifying identity...','Loading cybersecurity profile...','Rendering interface...','Systems online.'];
+
+const steps=['Loading kernel modules...','Establishing encrypted channel...','Verifying biometric identity...','Decrypting cybersecurity profile...','Calibrating threat matrix...','Rendering HUD interface...','Systems online.'];
 let si=0;
 const preFill=document.getElementById('pre-fill');
 const preText=document.getElementById('pre-text');
+
 function preStep(){
     if(si>=steps.length){
         setTimeout(()=>{
             document.getElementById('preloader').classList.add('hide');
-            setTimeout(()=>{document.getElementById('preloader').remove();document.getElementById('main-content').style.opacity='1';initAll()},800);
+            // Flash + reveal CV
+            setTimeout(()=>{
+                document.getElementById('preloader').remove();
+                const mc=document.getElementById('main-content');
+                mc.style.opacity='1';
+                // White flash overlay
+                const flash=document.createElement('div');
+                flash.style.cssText='position:fixed;inset:0;background:rgba(255,23,68,.15);z-index:99999;pointer-events:none;transition:opacity .6s';
+                document.body.appendChild(flash);
+                setTimeout(()=>{flash.style.opacity='0';setTimeout(()=>flash.remove(),600)},50);
+                initAll();
+            },800);
         },300);
         return;
     }
-    preText.textContent=steps[si];
+    // Glitch-appear each step
+    preText.style.opacity='0';
+    preText.style.transform='translateX(-5px)';
+    setTimeout(()=>{
+        preText.textContent=steps[si];
+        preText.style.transition='all .15s';
+        preText.style.opacity='1';
+        preText.style.transform='translateX(0)';
+    },60);
     preFill.style.width=((si+1)/steps.length*100)+'%';
     si++;
-    setTimeout(preStep,250+Math.random()*200);
+    setTimeout(preStep,300+Math.random()*250);
 }
-// preStep() called by password gate after successful auth
 
-function initAll(){initReveal();initRadar();initDots();initClock();initFabs()}
+function initAll(){initReveal();initRadar();initDots();initClock();initFabs();initTyping();initHoverSounds()}
+
+// ===== TYPING ANIMATION =====
+function initTyping(){
+    const nameEl=document.getElementById('type-name');
+    const surnameEl=document.getElementById('type-surname');
+    const name='IMRAN';const surname=' NOOR';
+    let i=0;
+    function typeChar(){
+        if(i<name.length){nameEl.textContent=name.slice(0,i+1);sndType();i++;setTimeout(typeChar,100+Math.random()*80)}
+        else{let j=0;function typeSurname(){if(j<surname.length){surnameEl.textContent=surname.slice(0,j+1);sndType();j++;setTimeout(typeSurname,80+Math.random()*60)}}typeSurname()}
+    }
+    setTimeout(typeChar,400);
+}
+
+// ===== HOVER SOUNDS =====
+let lastHover=0;
+function initHoverSounds(){
+    const hoverEls=document.querySelectorAll('.st,.c-item,.edu-card,.info-item,.interest-item,.fab');
+    hoverEls.forEach(el=>{el.addEventListener('mouseenter',()=>{const now=performance.now();if(now-lastHover>80){sndHover();lastHover=now}})});
+}
 
 // ===== MOBILE DETECTION =====
 const isMobile=matchMedia('(hover:none)').matches;
-
-// ===== MATRIX RAIN =====
-const mc=document.getElementById('matrix');
-const mx=mc.getContext('2d');
-let MW,MH;
-function mResize(){MW=mc.width=innerWidth;MH=mc.height=innerHeight}
-mResize();addEventListener('resize',mResize);
-
-const matrixChars='アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
-const fontSize=14;
-let matrixOn=false;
-let matrixCols=[];
-function initMatrixCols(){
-    matrixCols=[];
-    const cols=Math.floor(MW/fontSize);
-    for(let i=0;i<cols;i++){matrixCols.push({y:Math.random()*MH,speed:.3+Math.random()*.7})}
-}
-initMatrixCols();
-
-function drawMatrix(){
-    if(!matrixOn){requestAnimationFrame(drawMatrix);return}
-    mx.fillStyle='rgba(4,4,10,0.06)';
-    mx.fillRect(0,0,MW,MH);
-    mx.fillStyle='rgba(255,23,68,0.35)';
-    mx.font=fontSize+'px Fira Code,monospace';
-    const cols=Math.floor(MW/fontSize);
-    for(let i=0;i<cols;i++){
-        const char=matrixChars[Math.floor(Math.random()*matrixChars.length)];
-        const x=i*fontSize;
-        const col=matrixCols[i];
-        mx.fillText(char,x,col.y);
-        if(col.y>MH&&Math.random()>.97){col.y=0}
-        col.y+=col.speed*fontSize;
-    }
-    requestAnimationFrame(drawMatrix);
-}
-drawMatrix();
 
 // ===== AURORA =====
 const ac=document.getElementById('aurora');
@@ -746,12 +1065,17 @@ function aResize(){AW=ac.width=innerWidth;AH=ac.height=innerHeight}
 aResize();addEventListener('resize',aResize);
 function drawAurora(t){
     ax.clearRect(0,0,AW,AH);
-    const waves=[
-        {y:AH*.25,amp:70,freq:.002,spd:.0003,color:'rgba(255,23,68,.07)',line:'rgba(255,23,68,.12)'},
-        {y:AH*.35,amp:55,freq:.003,spd:.0005,color:'rgba(255,23,68,.05)',line:'rgba(255,23,68,.09)'},
-        {y:AH*.45,amp:65,freq:.0025,spd:.0004,color:'rgba(255,82,82,.04)',line:'rgba(255,82,82,.07)'},
-        {y:AH*.55,amp:45,freq:.004,spd:.0006,color:'rgba(255,138,128,.03)',line:'rgba(255,138,128,.06)'},
-        {y:AH*.65,amp:50,freq:.003,spd:.0002,color:'rgba(255,23,68,.025)',line:'rgba(255,23,68,.05)'},
+    const waves=isMobile?[
+        {y:AH*.3,amp:60,freq:.002,spd:.0003,color:'rgba(255,23,68,.06)',line:'rgba(255,23,68,.1)'},
+        {y:AH*.5,amp:50,freq:.003,spd:.0005,color:'rgba(255,23,68,.04)',line:'rgba(255,23,68,.07)'},
+        {y:AH*.7,amp:40,freq:.0025,spd:.0004,color:'rgba(255,82,82,.03)',line:'rgba(255,82,82,.05)'},
+    ]:[
+        {y:AH*.2,amp:70,freq:.002,spd:.0003,color:'rgba(255,23,68,.07)',line:'rgba(255,23,68,.12)'},
+        {y:AH*.3,amp:55,freq:.003,spd:.0005,color:'rgba(255,23,68,.05)',line:'rgba(255,23,68,.09)'},
+        {y:AH*.4,amp:65,freq:.0025,spd:.0004,color:'rgba(255,82,82,.04)',line:'rgba(255,82,82,.07)'},
+        {y:AH*.5,amp:45,freq:.004,spd:.0006,color:'rgba(255,82,82,.035)',line:'rgba(255,82,82,.06)'},
+        {y:AH*.6,amp:50,freq:.003,spd:.0002,color:'rgba(255,23,68,.025)',line:'rgba(255,23,68,.05)'},
+        {y:AH*.7,amp:40,freq:.0035,spd:.0004,color:'rgba(255,138,128,.02)',line:'rgba(255,138,128,.04)'},
     ];
     waves.forEach(w=>{
         ax.beginPath();ax.moveTo(0,AH);
@@ -777,7 +1101,7 @@ function bgResize(){BW=bgC.width=innerWidth;BH=bgC.height=innerHeight}
 bgResize();addEventListener('resize',bgResize);
 let mousePX=0,mousePY=0;
 document.addEventListener('mousemove',e=>{mousePX=e.clientX;mousePY=e.clientY});
-class Dot{constructor(){this.reset()}reset(){this.x=Math.random()*BW;this.y=Math.random()*BH;this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;this.r=Math.random()*1.2+.3;this.a=Math.random()*.2+.04;this.c=Math.random()>.8?'rgba(255,23,68,':'rgba(255,255,255,'}update(){
+class Dot{constructor(){this.reset()}reset(){this.x=Math.random()*BW;this.y=Math.random()*BH;this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;this.r=Math.random()*1.5+.4;this.a=Math.random()*.3+.06;this.c=Math.random()>.8?'rgba(255,23,68,':'rgba(255,255,255,'}update(){
     const dx=mousePX-this.x,dy=mousePY-this.y,d=Math.sqrt(dx*dx+dy*dy);
     if(d<200&&d>0){this.vx+=dx/d*.02;this.vy+=dy/d*.02}
     this.vx*=.99;this.vy*=.99;
@@ -795,7 +1119,7 @@ function drawBg(){
         bgX.closePath();bgX.stroke();
     }}
     dots.forEach(d=>{d.update();d.draw()});
-    for(let i=0;i<dots.length;i++){for(let j=i+1;j<dots.length;j++){const dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<100){bgX.beginPath();bgX.strokeStyle=`rgba(255,23,68,${.06*(1-d/100)})`;bgX.lineWidth=.4;bgX.moveTo(dots[i].x,dots[i].y);bgX.lineTo(dots[j].x,dots[j].y);bgX.stroke()}}}
+    for(let i=0;i<dots.length;i++){for(let j=i+1;j<dots.length;j++){const dx=dots[i].x-dots[j].x,dy=dots[i].y-dots[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){bgX.beginPath();bgX.strokeStyle=`rgba(255,23,68,${.07*(1-d/120)})`;bgX.lineWidth=.5;if(!isMobile){bgX.shadowColor='rgba(255,23,68,.1)';bgX.shadowBlur=4}bgX.moveTo(dots[i].x,dots[i].y);bgX.lineTo(dots[j].x,dots[j].y);bgX.stroke();if(!isMobile)bgX.shadowBlur=0}}}
     requestAnimationFrame(drawBg);
 }
 drawBg();
@@ -814,7 +1138,7 @@ window.addEventListener('scroll',()=>{sp.style.width=(scrollY/(document.body.scr
 // ===== MOUSE TRAIL (desktop only) =====
 if(!isMobile){
     const trailDots=[];
-    for(let i=0;i<8;i++){const d=document.createElement('div');d.className='trail-dot';d.style.opacity=(1-i/8)*.5;d.style.width=(6-i*.5)+'px';d.style.height=(6-i*.5)+'px';document.body.appendChild(d);trailDots.push({el:d,x:0,y:0})}
+    for(let i=0;i<10;i++){const d=document.createElement('div');d.className='trail-dot';d.style.opacity=(1-i/10)*.6;d.style.width=(7-i*.4)+'px';d.style.height=(7-i*.4)+'px';document.body.appendChild(d);trailDots.push({el:d,x:0,y:0})}
     let mx2=0,my2=0;
     document.addEventListener('mousemove',e=>{mx2=e.clientX;my2=e.clientY});
     function animTrail(){let px=mx2,py=my2;trailDots.forEach((d,i)=>{d.x+=(px-d.x)*(.3-i*.02);d.y+=(py-d.y)*(.3-i*.02);d.el.style.left=d.x+'px';d.el.style.top=d.y+'px';px=d.x;py=d.y});requestAnimationFrame(animTrail)}
@@ -824,7 +1148,15 @@ if(!isMobile){
 // ===== REVEAL =====
 function initReveal(){
     const els=document.querySelectorAll('.reveal');
-    const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');e.target.querySelectorAll('[data-width]').forEach(b=>{setTimeout(()=>{b.style.width=b.dataset.width+'%';setTimeout(()=>b.classList.add('pulse'),2000)},300)})}})},{threshold:.12});
+    const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');sndReveal();e.target.querySelectorAll('[data-width]').forEach(b=>{setTimeout(()=>{b.style.width=b.dataset.width+'%';setTimeout(()=>b.classList.add('pulse'),2000)},300)});
+        // Counter animation
+        e.target.querySelectorAll('.bar-pct[data-pct]').forEach(pct=>{
+            const target=parseInt(pct.dataset.pct);let current=0;
+            const step=target/40;
+            function count(){current=Math.min(current+step,target);pct.textContent=Math.round(current)+'%';if(current<target)requestAnimationFrame(count)}
+            requestAnimationFrame(count);
+        });
+    }})},{threshold:.12});
     els.forEach(el=>obs.observe(el));
 }
 
@@ -833,21 +1165,46 @@ function initRadar(){
     const c=document.getElementById('radarChart');if(!c)return;
     const ctx=c.getContext('2d');const W=c.width,H=c.height,cx=W/2,cy=H/2,R=Math.min(W,H)*.36;
     const labels=['Pentest','Network','Linux','AI/ML','Prompt','OSINT'];const vals=[.45,.5,.55,.35,.6,.3];const n=labels.length;
-    let progress=0;
+    let progress=0,scanAngle=0,pulsePhase=0,radarVisible=false,radarRunning=false;
     function drawFrame(){
+        if(!radarRunning)return;
         ctx.clearRect(0,0,W,H);const p=Math.min(progress,1);
-        for(let r=1;r<=5;r++){const rr=R*r/5;ctx.beginPath();for(let i=0;i<=n;i++){const a=Math.PI*2/n*i-Math.PI/2;const x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.closePath();ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;ctx.stroke()}
-        for(let i=0;i<n;i++){const a=Math.PI*2/n*i-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(255,255,255,.03)';ctx.lineWidth=.5;ctx.stroke()}
-        ctx.font=`${Math.max(9,W/35)}px Orbitron`;ctx.fillStyle='rgba(255,255,255,.35)';ctx.textAlign='center';ctx.textBaseline='middle';
+        // Grid rings with glow
+        for(let r=1;r<=5;r++){const rr=R*r/5;ctx.beginPath();for(let i=0;i<=n;i++){const a=Math.PI*2/n*i-Math.PI/2;const x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.closePath();ctx.strokeStyle=r%2===0?'rgba(255,23,68,.06)':'rgba(255,255,255,.04)';ctx.lineWidth=.5;ctx.stroke()}
+        // Axis lines
+        for(let i=0;i<n;i++){const a=Math.PI*2/n*i-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(255,23,68,.04)';ctx.lineWidth=.5;ctx.stroke()}
+        // Scan sweep
+        if(p>=1){scanAngle+=.015;
+            // Sweep line
+            ctx.save();ctx.beginPath();ctx.moveTo(cx,cy);
+            const lineX=cx+R*1.2*Math.cos(scanAngle),lineY=cy+R*1.2*Math.sin(scanAngle);
+            ctx.lineTo(lineX,lineY);ctx.strokeStyle='rgba(255,23,68,.3)';ctx.lineWidth=1.5;ctx.stroke();
+            // Sweep glow arc
+            for(let s=0;s<.4;s+=.05){const a=scanAngle-s;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R*1.1,a,a+.05);ctx.closePath();ctx.fillStyle=`rgba(255,23,68,${.03*(1-s/.4)})`;ctx.fill()}
+            ctx.restore()}
+        // Labels
+        ctx.font=`${Math.max(9,W/35)}px Orbitron`;ctx.fillStyle='rgba(255,255,255,.4)';ctx.textAlign='center';ctx.textBaseline='middle';
         for(let i=0;i<n;i++){const a=Math.PI*2/n*i-Math.PI/2;ctx.fillText(labels[i],cx+(R+16)*Math.cos(a),cy+(R+16)*Math.sin(a))}
+        // Data polygon
         ctx.beginPath();for(let i=0;i<=n;i++){const a=Math.PI*2/n*i-Math.PI/2;const v=vals[i%n]*p;const x=cx+R*v*Math.cos(a),y=cy+R*v*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}ctx.closePath();
-        const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,R);grd.addColorStop(0,'rgba(255,23,68,.2)');grd.addColorStop(1,'rgba(255,23,68,.03)');ctx.fillStyle=grd;ctx.fill();
-        ctx.strokeStyle='rgba(255,23,68,.6)';ctx.lineWidth=1.5;ctx.stroke();
-        for(let i=0;i<n;i++){const a=Math.PI*2/n*i-Math.PI/2;const v=vals[i]*p;const x=cx+R*v*Math.cos(a),y=cy+R*v*Math.sin(a);ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle='#ff1744';ctx.fill();ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fillStyle='rgba(255,23,68,.15)';ctx.fill()}
+        const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,R);grd.addColorStop(0,'rgba(255,23,68,.22)');grd.addColorStop(1,'rgba(255,23,68,.03)');ctx.fillStyle=grd;ctx.fill();
+        ctx.strokeStyle='rgba(255,23,68,.7)';ctx.lineWidth=2;if(!isMobile){ctx.shadowColor='rgba(255,23,68,.3)';ctx.shadowBlur=8}ctx.stroke();ctx.shadowBlur=0;
+        // Data points with pulse
+        pulsePhase+=.04;
+        for(let i=0;i<n;i++){const a=Math.PI*2/n*i-Math.PI/2;const v=vals[i]*p;const x=cx+R*v*Math.cos(a),y=cy+R*v*Math.sin(a);
+            const pulseR=6+Math.sin(pulsePhase+i)*2;
+            ctx.beginPath();ctx.arc(x,y,pulseR,0,Math.PI*2);ctx.fillStyle='rgba(255,23,68,.12)';ctx.fill();
+            ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fillStyle='#ff1744';ctx.fill();
+            ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.strokeStyle='rgba(255,23,68,.4)';ctx.lineWidth=1;ctx.stroke()}
         if(progress<1){progress+=.02;requestAnimationFrame(drawFrame)}
+        else{requestAnimationFrame(drawFrame)}
     }
-    const obs=new IntersectionObserver((entries)=>{if(entries[0].isIntersecting){drawFrame();obs.disconnect()}},{threshold:.3});
-    obs.observe(c);
+    const visObs=new IntersectionObserver((entries)=>{
+        radarRunning=entries[0].isIntersecting;
+        if(radarRunning&&!radarVisible){radarVisible=true;drawFrame()}
+        if(radarRunning)requestAnimationFrame(drawFrame);
+    },{threshold:.1});
+    visObs.observe(c);
 }
 
 // ===== NAV DOTS =====
@@ -863,7 +1220,7 @@ function initClock(){function update(){const now=new Date();document.getElementB
 
 // ===== KONAMI CODE =====
 let konamiSeq=[];const konamiCode=[38,38,40,40,37,39,37,39,66,65];
-document.addEventListener('keydown',e=>{konamiSeq.push(e.keyCode);if(konamiSeq.length>10)konamiSeq.shift();if(konamiSeq.join(',')===konamiCode.join(',')){document.getElementById('konami-msg').classList.add('show');setTimeout(()=>document.getElementById('konami-msg').classList.remove('show'),3000)}});
+document.addEventListener('keydown',e=>{konamiSeq.push(e.keyCode);if(konamiSeq.length>10)konamiSeq.shift();if(konamiSeq.join(',')===konamiCode.join(',')){document.getElementById('konami-msg').classList.add('show');sndKonami();setTimeout(()=>document.getElementById('konami-msg').classList.remove('show'),3000)}});
 
 // ===== TILT (desktop only) =====
 const card=document.querySelector('.cv-card');
@@ -878,20 +1235,8 @@ avatarWrap.addEventListener('click',()=>{
     if(avatarClicks>=10){
         avatarGlitch.classList.add('show');
         avatarWrap.style.animation='g1 .3s linear 3';
+        sndGlitch();
         setTimeout(()=>{avatarGlitch.classList.remove('show');avatarWrap.style.animation='';avatarClicks=0},3000);
-    }
-});
-
-// ===== H-A-C-K SEQUENCE (Toggle Matrix) =====
-let hackSeq=[];
-document.addEventListener('keydown',e=>{
-    hackSeq.push(e.key.toLowerCase());
-    if(hackSeq.length>4)hackSeq.shift();
-    if(hackSeq.join('')==='hack'){
-        matrixOn=!matrixOn;
-        mc.style.opacity=matrixOn?'.08':'0';
-        document.getElementById('fab-matrix').classList.toggle('matrix-active',matrixOn);
-        if(matrixOn)initMatrixCols();
     }
 });
 
@@ -919,9 +1264,9 @@ function initFabs(){
         fabs.classList.toggle('show',scrollY>400);
     },{passive:true});
 
-    document.getElementById('fab-top').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});
-    document.getElementById('fab-print').addEventListener('click',()=>{window.print()});
-    document.getElementById('fab-copy').addEventListener('click',()=>{
+    document.getElementById('fab-top').addEventListener('click',()=>{sndClick();window.scrollTo({top:0,behavior:'smooth'})});
+    document.getElementById('fab-print').addEventListener('click',()=>{sndClick();window.print()});
+    document.getElementById('fab-copy').addEventListener('click',()=>{sndClick();
         navigator.clipboard.writeText(location.href).then(()=>{
             const btn=document.getElementById('fab-copy');
             const label=btn.querySelector('.fab-label');
@@ -929,106 +1274,6 @@ function initFabs(){
             setTimeout(()=>{label.textContent='COPY'},1500);
         });
     });
-    document.getElementById('fab-matrix').addEventListener('click',()=>{
-        matrixOn=!matrixOn;
-        mc.style.opacity=matrixOn?'.08':'0';
-        document.getElementById('fab-matrix').classList.toggle('matrix-active',matrixOn);
-        if(matrixOn)initMatrixCols();
-    });
-}
-</script>
-
-<!-- ===== PASSWORD PROTECTION ===== -->
-<style>
-#pw-gate{
-    position:fixed;inset:0;z-index:9999999;
-    background:#04040a;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    font-family:'Fira Code',monospace;
-    transition:opacity .8s cubic-bezier(.4,0,.2,1),transform .8s cubic-bezier(.4,0,.2,1);
-}
-#pw-gate.unlocked{opacity:0;transform:scale(1.05);pointer-events:none}
-.pw-ring{width:80px;height:80px;position:relative;margin-bottom:32px}
-.pw-ring span{position:absolute;inset:0;border:2px solid transparent;border-radius:50%}
-.pw-ring span:nth-child(1){border-top-color:#ff1744;animation:spin 1s linear infinite}
-.pw-ring span:nth-child(2){inset:8px;border-right-color:#ff5252;animation:spin 1.5s linear infinite reverse}
-.pw-ring span:nth-child(3){inset:16px;border-bottom-color:#ff8a80;animation:spin 2s linear infinite}
-.pw-title{font-family:'Press Start 2P',monospace;font-size:1em;color:#ff1744;letter-spacing:5px;margin-bottom:8px;text-shadow:0 0 30px rgba(255,23,68,.5)}
-.pw-sub{font-size:.7em;color:#444;letter-spacing:2px;margin-bottom:36px}
-.pw-box{
-    position:relative;width:320px;
-}
-.pw-box input{
-    width:100%;padding:14px 50px 14px 18px;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,23,68,.2);
-    color:#f5f5f5;font-family:'Fira Code',monospace;font-size:.9em;
-    letter-spacing:3px;outline:none;
-    transition:border-color .3s,box-shadow .3s;
-}
-.pw-box input:focus{border-color:rgba(255,23,68,.6);box-shadow:0 0 25px rgba(255,23,68,.1)}
-.pw-box input::placeholder{color:#333;letter-spacing:1px}
-.pw-btn{
-    margin-top:14px;width:100%;padding:13px;
-    background:rgba(255,23,68,.08);border:1px solid rgba(255,23,68,.25);
-    color:#ff1744;font-family:'Press Start 2P',monospace;font-size:.55em;
-    letter-spacing:3px;cursor:pointer;transition:all .3s;
-}
-.pw-btn:hover{background:rgba(255,23,68,.18);box-shadow:0 0 25px rgba(255,23,68,.15)}
-.pw-err{
-    margin-top:12px;font-size:.7em;color:#ff1744;letter-spacing:2px;
-    text-align:center;min-height:18px;text-shadow:0 0 10px rgba(255,23,68,.4);
-    opacity:0;transition:opacity .3s;
-}
-.pw-err.show{opacity:1}
-.pw-shake{animation:pwShake .4s ease}
-@keyframes pwShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
-.pw-lock-icon{font-size:2.5em;margin-bottom:16px;filter:drop-shadow(0 0 12px rgba(255,23,68,.4))}
-</style>
-
-<div id="pw-gate">
-    <div class="pw-ring"><span></span><span></span><span></span></div>
-    <div class="pw-lock-icon">🔒</div>
-    <div class="pw-title">ACCESS DENIED</div>
-    <div class="pw-sub">// ENTER AUTHORIZATION KEY</div>
-    <div class="pw-box">
-        <input type="password" id="pw-input" placeholder="password..." autocomplete="off" spellcheck="false">
-        <button class="pw-btn" onclick="checkPW()">▶ AUTHENTICATE</button>
-        <div class="pw-err" id="pw-err">⚠ INVALID CREDENTIALS — ACCESS BLOCKED</div>
-    </div>
-</div>
-
-<script>
-(function(){
-    // Check if already unlocked in this session
-    if(sessionStorage.getItem('cv_auth')==='1'){
-        document.getElementById('pw-gate').style.display='none';
-        preStep();
-    }
-    document.getElementById('pw-input').addEventListener('keydown',function(e){
-        if(e.key==='Enter')checkPW();
-    });
-})();
-
-function checkPW(){
-    const val=document.getElementById('pw-input').value;
-    const box=document.querySelector('.pw-box');
-    const err=document.getElementById('pw-err');
-    if(btoa(val)==='WkVSMERBWSNQM1NIQVdBUjE='){
-        sessionStorage.setItem('cv_auth','1');
-        document.getElementById('pw-gate').classList.add('unlocked');
-        setTimeout(()=>{
-            document.getElementById('pw-gate').style.display='none';
-            preStep();
-        },900);
-    } else {
-        box.classList.remove('pw-shake');
-        void box.offsetWidth;
-        box.classList.add('pw-shake');
-        err.classList.add('show');
-        document.getElementById('pw-input').value='';
-        setTimeout(()=>err.classList.remove('show'),2500);
-    }
 }
 </script>
 </body>
