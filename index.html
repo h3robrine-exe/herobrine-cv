@@ -522,6 +522,7 @@
         }
 
         /* ===== PRINT ===== */
+
         @media print{
             body{background:var(--bg)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
             body::after,#lockscreen,#preloader,#nav-dots,#spotlight,.orb,.orbit-ring,.orbit-ring2,.hud-corner,.hud-status,.trail-dot,#konami-msg,canvas,#scroll-progress,.hex-bg,#fabs,.classified-stamp,.avatar-glitch-msg{display:none!important}
@@ -579,6 +580,7 @@
 
     <!-- KONAMI MSG -->
     <div id="konami-msg">ACCESS GRANTED<br><span style="font-size:.5em;color:var(--text3);margin-top:10px;display:block">HEROBRINE SEES ALL</span></div>
+
 
     <!-- FLOATING ACTION BUTTONS -->
     <div id="fabs">
@@ -796,25 +798,44 @@ console.log('%c> SYSTEM ACCESSED — HEROBRINE SEES ALL','color:#666;font-family
 let audioCtx=null;
 function ensureAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
 
-// Typing click — short filtered noise burst
+// FM Synthesis helper — reusable metallic shimmer tone
+function fmPlay(ctx,freq,modRatio,modDepth,start,dur,vol){
+    const mod=ctx.createOscillator();mod.type='sine';mod.frequency.value=freq*modRatio;
+    const modG=ctx.createGain();modG.gain.value=modDepth;mod.connect(modG);
+    const car=ctx.createOscillator();car.type='sine';car.frequency.value=freq;modG.connect(car.frequency);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(0,start);
+    gain.gain.linearRampToValueAtTime(vol,start+0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001,start+dur);
+    car.connect(gain);gain.connect(ctx.destination);
+    mod.start(start);car.start(start);mod.stop(start+dur+0.01);car.stop(start+dur+0.01);
+}
+
+// Typing click — crystalline FM keystroke with sparkle
 function sndType(){
     const ctx=ensureAudio();if(!ctx)return;
-    const dur=0.02+Math.random()*0.015;
-    const buf=ctx.createBuffer(1,ctx.sampleRate*dur,ctx.sampleRate);
-    const data=buf.getChannelData(0);
-    for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,8);
-    const src=ctx.createBufferSource();src.buffer=buf;
-    const filt=ctx.createBiquadFilter();filt.type='highpass';filt.frequency.value=2000+Math.random()*2000;
-    const gain=ctx.createGain();gain.gain.value=1.0;
-    src.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
-    src.start();src.stop(ctx.currentTime+dur);
+    const t=ctx.currentTime;const dur=0.035;
+    const mod=ctx.createOscillator();mod.type='sine';mod.frequency.value=3600;
+    const modG=ctx.createGain();modG.gain.value=400;
+    const car=ctx.createOscillator();car.type='sine';
+    car.frequency.setValueAtTime(1800,t);car.frequency.exponentialRampToValueAtTime(2400,t+dur);
+    mod.connect(modG);modG.connect(car.frequency);
+    const filt=ctx.createBiquadFilter();filt.type='highpass';filt.frequency.value=1200;
+    const gain=ctx.createGain();gain.gain.setValueAtTime(1.0,t);
+    gain.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    car.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
+    const hi=ctx.createOscillator();hi.type='sine';hi.frequency.value=5200;
+    const hiG=ctx.createGain();hiG.gain.setValueAtTime(0.15,t);
+    hiG.gain.exponentialRampToValueAtTime(0.001,t+dur*0.5);
+    hi.connect(hiG);hiG.connect(ctx.destination);
+    mod.start(t);car.start(t);hi.start(t);
+    mod.stop(t+dur);car.stop(t+dur);hi.stop(t+dur);
 }
 
 // Hover tick — tiny click
 function sndHover(){
     const ctx=ensureAudio();if(!ctx)return;
     const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=3000;
-    const gain=ctx.createGain();gain.gain.setValueAtTime(1.0,ctx.currentTime);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(2.0,ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.04);
     osc.connect(gain);gain.connect(ctx.destination);
     osc.start();osc.stop(ctx.currentTime+0.04);
@@ -828,7 +849,7 @@ function sndReveal(){
     for(let i=0;i<data.length;i++){const t=i/data.length;data[i]=(Math.random()*2-1)*Math.sin(t*Math.PI)*0.5}
     const src=ctx.createBufferSource();src.buffer=buf;
     const filt=ctx.createBiquadFilter();filt.type='bandpass';filt.frequency.value=400;filt.Q.value=1;
-    const gain=ctx.createGain();gain.gain.value=1.0;
+    const gain=ctx.createGain();gain.gain.value=2.0;
     src.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
     src.start();
 }
@@ -840,7 +861,7 @@ function sndKonami(){
     notes.forEach((f,i)=>{
         const osc=ctx.createOscillator();osc.type='square';osc.frequency.value=f;
         const gain=ctx.createGain();gain.gain.setValueAtTime(0,ctx.currentTime+i*0.07);
-        gain.gain.linearRampToValueAtTime(1.0,ctx.currentTime+i*0.07+0.02);
+        gain.gain.linearRampToValueAtTime(2.0,ctx.currentTime+i*0.07+0.02);
         gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.07+0.5);
         osc.connect(gain);gain.connect(ctx.destination);
         osc.start(ctx.currentTime+i*0.07);osc.stop(ctx.currentTime+i*0.07+0.5);
@@ -853,7 +874,7 @@ function sndGlitch(){
     for(let i=0;i<5;i++){
         const osc=ctx.createOscillator();osc.type='sawtooth';
         osc.frequency.value=100+Math.random()*2000;
-        const gain=ctx.createGain();gain.gain.setValueAtTime(1.0,ctx.currentTime+i*0.06);
+        const gain=ctx.createGain();gain.gain.setValueAtTime(2.0,ctx.currentTime+i*0.06);
         gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.06+0.06);
         osc.connect(gain);gain.connect(ctx.destination);
         osc.start(ctx.currentTime+i*0.06);osc.stop(ctx.currentTime+i*0.06+0.06);
@@ -866,7 +887,7 @@ function sndClick(){
     const osc=ctx.createOscillator();osc.type='sine';
     osc.frequency.setValueAtTime(800,ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(200,ctx.currentTime+0.08);
-    const gain=ctx.createGain();gain.gain.setValueAtTime(1.0,ctx.currentTime);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(2.0,ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.1);
     osc.connect(gain);gain.connect(ctx.destination);
     osc.start();osc.stop(ctx.currentTime+0.1);
@@ -880,77 +901,120 @@ const lockBtn=document.getElementById('lock-btn');
 const lockErr=document.getElementById('lock-error');
 const lockForm=document.getElementById('lock-form');
 
-// Lock error sound
+// Lock error — rounded triangle + static burst
 function sndLockError(){
     const ctx=ensureAudio();if(!ctx)return;
-    const osc=ctx.createOscillator();osc.type='square';
-    osc.frequency.setValueAtTime(200,ctx.currentTime);
-    osc.frequency.linearRampToValueAtTime(80,ctx.currentTime+0.25);
-    const gain=ctx.createGain();gain.gain.setValueAtTime(0.18,ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);
-    osc.connect(gain);gain.connect(ctx.destination);
-    osc.start();osc.stop(ctx.currentTime+0.3);
+    const t=ctx.currentTime;
+    const osc=ctx.createOscillator();osc.type='triangle';
+    osc.frequency.setValueAtTime(200,t);osc.frequency.linearRampToValueAtTime(80,t+0.25);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(0.36,t);
+    gain.gain.exponentialRampToValueAtTime(0.001,t+0.3);
+    osc.connect(gain);gain.connect(ctx.destination);osc.start(t);osc.stop(t+0.3);
+    // Static burst
+    const dur=0.04;const buf=ctx.createBuffer(1,ctx.sampleRate*dur,ctx.sampleRate);
+    const data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,3)*0.4;
+    const src=ctx.createBufferSource();src.buffer=buf;
+    const filt=ctx.createBiquadFilter();filt.type='bandpass';filt.frequency.value=3000;filt.Q.value=2;
+    const sG=ctx.createGain();sG.gain.value=2.0;
+    src.connect(filt);filt.connect(sG);sG.connect(ctx.destination);src.start(t+0.05);
 }
 
-// Authorize unlock sound — calm warm rise + schedule all boot audio in same gesture
+// Authorize unlock — clean sci-fi boot
 function sndUnlock(){
     const ctx=ensureAudio();if(!ctx)return;
     const t=ctx.currentTime;
-    // Unlock chord
-    const notes=[261,330,392,523];
-    notes.forEach((f,i)=>{
-        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
-        const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=500;
-        const gain=ctx.createGain();gain.gain.setValueAtTime(0,t+i*0.12);
-        gain.gain.linearRampToValueAtTime(0.25,t+i*0.12+0.08);
-        gain.gain.exponentialRampToValueAtTime(0.001,t+i*0.12+1.0);
-        osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
-        osc.start(t+i*0.12);osc.stop(t+i*0.12+1.0);
+
+    // --- UNLOCK CHIME ---
+    // Clean ascending FM arpeggio — digital door opening
+    const chime=[330,440,523,659,784];
+    chime.forEach((f,i)=>{
+        fmPlay(ctx,f,2,200,t+i*0.08,0.5,0.15);
     });
 
-    // Pre-schedule all boot audio in this same gesture callback (required for mobile)
-    // Boot ambient pads
-    const bootStart=t+2.0;
-    [82,123,165].forEach(f=>{
+    // Soft pad swell — warm welcome
+    const padS=t+0.3;
+    [220,330,440].forEach((f,i)=>{
+        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
+        const filt=ctx.createBiquadFilter();filt.type='lowpass';
+        filt.frequency.setValueAtTime(600,padS);filt.frequency.exponentialRampToValueAtTime(2000,padS+1.5);
+        const g=ctx.createGain();g.gain.setValueAtTime(0,padS+i*0.1);
+        g.gain.linearRampToValueAtTime(0.12,padS+i*0.1+0.2);
+        g.gain.exponentialRampToValueAtTime(0.001,padS+2.5);
+        osc.connect(filt);filt.connect(g);g.connect(ctx.destination);
+        osc.start(padS+i*0.1);osc.stop(padS+2.5);
+    });
+
+    // --- BOOT SEQUENCE ---
+    const B=t+1.5;
+
+    // Ambient hum — soft sci-fi
+    [110,165,220].forEach(f=>{
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
         const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=200;
-        const g=ctx.createGain();g.gain.value=0.22;
+        const g=ctx.createGain();g.gain.value=0.15;
         osc.connect(filt);filt.connect(g);g.connect(ctx.destination);
-        osc.start(bootStart);osc.stop(bootStart+6);
+        osc.start(B);osc.stop(B+5);
     });
-    // Boot step tones
-    const stepNotes=[220,260,300,340,380,420,330];
-    stepNotes.forEach((f,i)=>{
-        const st=bootStart+i*0.55;
-        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
-        const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=400;
-        const gain=ctx.createGain();gain.gain.setValueAtTime(0,st);
-        gain.gain.linearRampToValueAtTime(0.3,st+0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001,st+0.4);
-        osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
-        osc.start(st);osc.stop(st+0.4);
+
+    // Step 1: Loading kernel — clean ping
+    fmPlay(ctx,440,2,180,B,0.25,0.18);
+
+    // Step 2: Encrypted channel — higher ping
+    fmPlay(ctx,523,2,200,B+0.35,0.25,0.18);
+
+    // Step 3: Biometric scan — sweep
+    const sw1=ctx.createOscillator();sw1.type='sine';
+    sw1.frequency.setValueAtTime(300,B+0.7);sw1.frequency.exponentialRampToValueAtTime(1200,B+1.0);
+    const sw1G=ctx.createGain();sw1G.gain.setValueAtTime(0,B+0.7);
+    sw1G.gain.linearRampToValueAtTime(0.15,B+0.75);sw1G.gain.exponentialRampToValueAtTime(0.001,B+1.0);
+    sw1.connect(sw1G);sw1G.connect(ctx.destination);sw1.start(B+0.7);sw1.stop(B+1.0);
+
+    // Step 4: Decrypting — sweep higher
+    const sw2=ctx.createOscillator();sw2.type='sine';
+    sw2.frequency.setValueAtTime(400,B+1.1);sw2.frequency.exponentialRampToValueAtTime(1600,B+1.4);
+    const sw2G=ctx.createGain();sw2G.gain.setValueAtTime(0,B+1.1);
+    sw2G.gain.linearRampToValueAtTime(0.12,B+1.15);sw2G.gain.exponentialRampToValueAtTime(0.001,B+1.4);
+    sw2.connect(sw2G);sw2G.connect(ctx.destination);sw2.start(B+1.1);sw2.stop(B+1.4);
+
+    // Step 5: Calibrating matrix — chord
+    const stabT=B+1.5;
+    [330,415,523].forEach((f,i)=>{
+        fmPlay(ctx,f,1.5,150,stabT+i*0.03,0.4,0.12);
     });
-    // Systems online chord
-    const onlineStart=bootStart+4.5;
-    [220,277,330,440].forEach((f,i)=>{
-        const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
-        const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=500;
-        const gain=ctx.createGain();gain.gain.setValueAtTime(0,onlineStart+i*0.15);
-        gain.gain.linearRampToValueAtTime(0.25,onlineStart+i*0.15+0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001,onlineStart+i*0.15+1.2);
-        osc.connect(filt);filt.connect(gain);gain.connect(ctx.destination);
-        osc.start(onlineStart+i*0.15);osc.stop(onlineStart+i*0.15+1.2);
+
+    // Step 6: Rendering HUD — fast arpeggio
+    const arpT=B+1.9;
+    [523,659,784,880,1047].forEach((f,i)=>{
+        fmPlay(ctx,f,2,180,arpT+i*0.05,0.2,0.1);
     });
-    // Gentle chime pings
-    const chimeNotes=[330,392,440,523,587];
-    chimeNotes.forEach((f,i)=>{
-        const ct=bootStart+0.8+i*1.1;
+
+    // Step 7: Systems online — clean finish chord
+    const onT=B+2.4;
+    // Soft sub
+    const sub=ctx.createOscillator();sub.type='sine';sub.frequency.value=82;
+    const subG=ctx.createGain();subG.gain.setValueAtTime(0,onT);
+    subG.gain.linearRampToValueAtTime(0.2,onT+0.05);subG.gain.exponentialRampToValueAtTime(0.001,onT+1.5);
+    sub.connect(subG);subG.connect(ctx.destination);sub.start(onT);sub.stop(onT+1.5);
+    // Clean harmonic chord — sine only, no noise
+    [220,277,330,440,554].forEach((f,i)=>{
+        [-4,0,4].forEach(detune=>{
+            const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;osc.detune.value=detune;
+            const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=1000;
+            const g=ctx.createGain();g.gain.setValueAtTime(0,onT+i*0.04);
+            g.gain.linearRampToValueAtTime(0.08,onT+i*0.04+0.06);
+            g.gain.exponentialRampToValueAtTime(0.001,onT+2.5);
+            osc.connect(filt);filt.connect(g);g.connect(ctx.destination);
+            osc.start(onT+i*0.04);osc.stop(onT+2.5);
+        });
+    });
+    // High chime tail
+    [1047,1175,1319].forEach((f,i)=>{
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
-        const g=ctx.createGain();g.gain.setValueAtTime(0,ct);
-        g.gain.linearRampToValueAtTime(0.35,ct+0.1);
-        g.gain.exponentialRampToValueAtTime(0.001,ct+0.8);
+        const g=ctx.createGain();g.gain.setValueAtTime(0,onT+0.3+i*0.12);
+        g.gain.linearRampToValueAtTime(0.04,onT+0.3+i*0.12+0.03);
+        g.gain.exponentialRampToValueAtTime(0.001,onT+2.5);
         osc.connect(g);g.connect(ctx.destination);
-        osc.start(ct);osc.stop(ct+0.9);
+        osc.start(onT+0.3+i*0.12);osc.stop(onT+2.5);
     });
 }
 
@@ -969,7 +1033,7 @@ function tryUnlock(){
                 document.getElementById('preloader').style.display='';
                 preStep();
             },800);
-        },500);
+        },1000);
     }else{
         sndLockError();
         lockErr.classList.add('show');
@@ -1154,7 +1218,7 @@ if(!isMobile){
 // ===== REVEAL =====
 function initReveal(){
     const els=document.querySelectorAll('.reveal');
-    const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');sndReveal();e.target.querySelectorAll('[data-width]').forEach(b=>{setTimeout(()=>{b.style.width=b.dataset.width+'%';setTimeout(()=>b.classList.add('pulse'),2000)},300)});
+    const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');sndReveal();e.target.querySelectorAll('[data-width]').forEach((b,i)=>{setTimeout(()=>{b.style.width=b.dataset.width+'%';setTimeout(()=>b.classList.add('pulse'),2000)},300+i*80)});
         // Counter animation
         e.target.querySelectorAll('.bar-pct[data-pct]').forEach(pct=>{
             const target=parseInt(pct.dataset.pct);let current=0;
