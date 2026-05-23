@@ -1033,7 +1033,7 @@ function preStep(){
     setTimeout(preStep,300+Math.random()*250);
 }
 
-function initAll(){initReveal();initRadar();initDots();initClock();initFabs();initTyping();initHoverSounds()}
+function initAll(){initReveal();initRadar();initDots();initClock();initFabs();initTyping();initHoverSounds();initClickSounds()}
 
 // ===== TYPING ANIMATION =====
 function initTyping(){
@@ -1048,7 +1048,12 @@ function initTyping(){
     setTimeout(typeChar,400);
 }
 
-// ===== HOVER SOUNDS =====
+// ===== CLICK SOUND ON ALL PAGE CLICKS =====
+function initClickSounds(){
+    document.addEventListener('pointerdown',e=>{
+        if(!e.target.closest('#lockscreen'))sndClick();
+    });
+}
 let lastHover=0;
 function initHoverSounds(){
     const hoverEls=document.querySelectorAll('.st,.c-item,.edu-card,.info-item,.interest-item,.fab');
@@ -1265,10 +1270,9 @@ function initFabs(){
         fabs.classList.toggle('show',scrollY>400);
     },{passive:true});
 
-    document.getElementById('fab-top').addEventListener('click',()=>{sndClick();window.scrollTo({top:0,behavior:'smooth'})});
-    document.getElementById('fab-print').addEventListener('click',()=>{sndClick();window.print()});
-    document.getElementById('fab-copy').addEventListener('click',()=>{sndClick();
-        navigator.clipboard.writeText(location.href).then(()=>{
+    document.getElementById('fab-top').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});
+    document.getElementById('fab-print').addEventListener('click',()=>{window.print()});
+    document.getElementById('fab-copy').addEventListener('click',()=>{navigator.clipboard.writeText(location.href).then(()=>{
             const btn=document.getElementById('fab-copy');
             const label=btn.querySelector('.fab-label');
             label.textContent='COPIED!';
