@@ -947,7 +947,7 @@ function sndUnlock(){
         const ct=bootStart+0.8+i*1.1;
         const osc=ctx.createOscillator();osc.type='sine';osc.frequency.value=f;
         const g=ctx.createGain();g.gain.setValueAtTime(0,ct);
-        g.gain.linearRampToValueAtTime(0.15,ct+0.1);
+        g.gain.linearRampToValueAtTime(0.75,ct+0.1);
         g.gain.exponentialRampToValueAtTime(0.001,ct+0.8);
         osc.connect(g);g.connect(ctx.destination);
         osc.start(ct);osc.stop(ct+0.9);
